@@ -8,18 +8,17 @@ use Psr\Http\Message\ServerRequestInterface;
 
 $loop = React\EventLoop\Factory::create();
 
-$server = new Server(
-        function (ServerRequestInterface $request) {
-            $browser = implode($request->getHeader('User-Agent'));
-            echo 'Браузер: ' . $browser . PHP_EOL;
+$router = new Router();
+$router->load(__DIR__ . '/routes.php');
 
-            $params = $request->getQueryParams();
-            $name = $params['name'] ?? 'мир';
+$server = new Server(
+        function (ServerRequestInterface $request) use ($router) {
+            $router($request->getUri()->getPath());
 
             return new Response(
                 200,
                 ['Content-Type' => 'text/plain; charset=UTF-8'],
-                'Привет, ' . $name
+                'Привет, мир!'
             );
         }
     );
