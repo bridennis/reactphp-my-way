@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Приложение на ReactPHP</title>
+    <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+    >
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <form action="/upload"
+              method="POST"
+              class="justify-content-center"
+        >
+            <div class="form-group">
+                <label for="text">Текст</label>
+                <textarea name="text"
+                          id="text"
+                          rows="3"
+                          cols="60"
+                          class="form-control"
+                >
+</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                Отправить
+            </button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

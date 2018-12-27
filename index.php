@@ -3,23 +3,16 @@
 require 'vendor/autoload.php';
 
 use React\Http\Server;
-use React\Http\Response;
 use Psr\Http\Message\ServerRequestInterface;
 
 $loop = React\EventLoop\Factory::create();
 
-$router = new Router();
+$router = new Router($loop);
 $router->load(__DIR__ . '/routes.php');
 
 $server = new Server(
         function (ServerRequestInterface $request) use ($router) {
-            $router($request->getUri()->getPath());
-
-            return new Response(
-                200,
-                ['Content-Type' => 'text/plain; charset=UTF-8'],
-                'Привет, мир!'
-            );
+            return $router($request);
         }
     );
 
