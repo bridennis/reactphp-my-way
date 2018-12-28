@@ -2,13 +2,20 @@
 
 namespace App\Controller;
 
+use app\ChildProcessFactory;
 use Psr\Http\Message\ServerRequestInterface;
-use React\ChildProcess\Process;
 use React\EventLoop\LoopInterface;
 use React\Http\Response;
 
 class Preview
 {
+    private $childProcesses;
+
+    public function __construct(ChildProcessFactory $childProcesses)
+    {
+        $this->childProcesses = $childProcesses;
+    }
+
     public function __invoke(
         ServerRequestInterface $request,
         LoopInterface $loop
@@ -16,8 +23,10 @@ class Preview
     {
         $fileName = trim($request->getUri()->getPath(), '/');
         $ext = pathinfo($fileName, PATHINFO_EXTENSION);
-        $readFile = new Process("cat $fileName", __DIR__ . '/../..');
+        $readFile = $this->childProcesses->create('cat ' . $fileName);
+
         $readFile->start($loop);
+
         return new Response(
             200,
             ['Content-Type' => 'image/' . $ext],

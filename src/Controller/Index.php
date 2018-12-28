@@ -2,21 +2,28 @@
 
 namespace App\Controller;
 
+use app\ChildProcessFactory;
 use Psr\Http\Message\ServerRequestInterface;
-use React\ChildProcess\Process;
 use React\EventLoop\LoopInterface;
 use React\Http\Response;
 
 class Index
 {
+    private $childProcesses;
+
+    public function __construct(ChildProcessFactory $childProcesses)
+    {
+        $this->childProcesses = $childProcesses;
+    }
+
     public function __invoke(
         ServerRequestInterface $request,
         LoopInterface $loop
     ) {
-        $listFiles = new Process('ls uploads', __DIR__ . '/../..');
+        $listFiles = $this->childProcesses->create('ls uploads');
         $listFiles->start($loop);
 
-        $renderPage = new Process('php pages/index.php', __DIR__ . '/../..');
+        $renderPage = $this->childProcesses->create('php pages/index.php');
         $renderPage->start($loop);
 
         $listFiles->stdout->pipe($renderPage->stdin);
