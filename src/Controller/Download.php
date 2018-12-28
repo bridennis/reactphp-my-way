@@ -16,10 +16,8 @@ class Download
         $this->childProcesses = $childProcesses;
     }
 
-    public function __invoke(
-        ServerRequestInterface $request,
-        LoopInterface $loop
-    ) {
+    public function __invoke(ServerRequestInterface $request, LoopInterface $loop)
+    {
         $fileName = str_replace(
             'download/',
             '',

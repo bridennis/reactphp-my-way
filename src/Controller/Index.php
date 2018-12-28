@@ -16,10 +16,8 @@ class Index
         $this->childProcesses = $childProcesses;
     }
 
-    public function __invoke(
-        ServerRequestInterface $request,
-        LoopInterface $loop
-    ) {
+    public function __invoke(ServerRequestInterface $request, LoopInterface $loop)
+    {
         $listFiles = $this->childProcesses->create('ls uploads');
         $listFiles->start($loop);
 

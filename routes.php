@@ -14,7 +14,7 @@ return [
 
     'download/uploads/.*\.(jpg|png)$' => new Download($childProcessFactory),
 
-    'uploads/.*\.(jpg|png)$' => new Preview($childProcessFactory),
+    'previews/.*\.(jpg|png)$' => new Preview($childProcessFactory),
 
     'upload' => new Upload($childProcessFactory),
 
