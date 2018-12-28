@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use app\ChildProcessFactory;
+use App\ChildProcessFactory;
 use Psr\Http\Message\ServerRequestInterface;
 use React\EventLoop\LoopInterface;
 use React\Http\Response;

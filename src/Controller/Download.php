@@ -7,7 +7,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use React\EventLoop\LoopInterface;
 use React\Http\Response;
 
-class Preview
+class Download
 {
     private $childProcesses;
 
@@ -21,15 +21,16 @@ class Preview
         LoopInterface $loop
     )
     {
-        $fileName = trim($request->getUri()->getPath(), '/');
-        $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+        $fileName = str_replace(
+            'download/', '', trim($request->getUri()->getPath(), '/')
+        );
         $readFile = $this->childProcesses->create('cat ' . $fileName);
 
         $readFile->start($loop);
 
         return new Response(
             200,
-            ['Content-Type' => 'image/' . $ext],
+            ['Content-Disposition' => 'attachment'],
             $readFile->stdout
         );
     }
