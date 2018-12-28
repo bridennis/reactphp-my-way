@@ -43,6 +43,7 @@
                 <ul class="list-group col-sm-6">
                     <?php foreach ($uploads as $upload) : ?>
                         <li class="list-group-item">
+                            <img class="col-sm-2" src="uploads/<?= $upload; ?>">
                             <?= $upload; ?>
                         </li>
                     <?php endforeach; ?>

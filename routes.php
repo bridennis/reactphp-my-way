@@ -7,6 +7,21 @@ use React\EventLoop\LoopInterface;
 use React\Http\Response;
 
 return [
+    '/uploads/.*\.(jpg|png)$' => function (
+        ServerRequestInterface $request,
+        LoopInterface $loop
+    ) {
+        $fileName = trim($request->getUri()->getPath(), '/');
+        $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+        $readFile = new Process("cat $fileName", __DIR__);
+        $readFile->start($loop);
+        return new Response(
+            200,
+            ['Content-Type' => 'image/' . $ext],
+            $readFile->stdout
+        );
+    },
+
     '/upload' => function (
         ServerRequestInterface $request,
         LoopInterface $loop
