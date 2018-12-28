@@ -32,7 +32,7 @@ return [
             __DIR__
         );
         $process->start($loop);
-        $process->stdin->write($file->getStream()->getContents());
+        $process->stdin->end($file->getStream()->getContents());
 
         return new Response(
             200,
