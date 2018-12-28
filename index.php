@@ -2,7 +2,7 @@
 
 require 'vendor/autoload.php';
 
-use app\Router;
+use App\Router;
 use React\Http\Server;
 use Psr\Http\Message\ServerRequestInterface;
 

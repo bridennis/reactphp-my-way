@@ -1,6 +1,6 @@
 <?php
 
-namespace app;
+namespace App;
 
 use Psr\Http\Message\ServerRequestInterface;
 use React\EventLoop\LoopInterface;
