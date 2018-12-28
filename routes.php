@@ -1,6 +1,7 @@
 <?php
 
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UploadedFileInterface;
 use React\ChildProcess\Process;
 use React\EventLoop\LoopInterface;
 use React\Http\Response;
@@ -20,11 +21,23 @@ return [
         );
     },
 
-    '/upload' => function (ServerRequestInterface $request) {
+    '/upload' => function (
+        ServerRequestInterface $request,
+        LoopInterface $loop
+    ) {
+        /** @var UploadedFileInterface $file */
+        $file = $request->getUploadedFiles()['file'];
+        $process = new Process(
+            'cat > uploads/' . $file->getClientFilename(),
+            __DIR__
+        );
+        $process->start($loop);
+        $process->stdin->write($file->getStream()->getContents());
+
         return new Response(
             200,
-            ['Content-type' => 'text/plain; charset=UTF-8'],
-            'Страница загрузки'
+            ['Content-Type' => 'text/plain; charset=UTF-8'],
+            'Загрузка завершена'
         );
     }
 ];

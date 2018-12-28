@@ -12,18 +12,15 @@
 <div class="container">
     <div class="row">
         <form action="/upload"
-              method="POST"
+              method="post"
               class="justify-content-center"
-        >
+              enctype="multipart/form-data">
             <div class="form-group">
-                <label for="text">Текст</label>
-                <textarea name="text"
-                          id="text"
-                          rows="3"
-                          cols="60"
-                          class="form-control"
-                >
-</textarea>
+                <label for="file">Загрузить файл:</label>
+                <input name="file"
+                       id="file"
+                       type="file"
+                       accept="image/x-png,image/jpeg"/>
             </div>
             <button type="submit" class="btn btn-primary">
                 Отправить
