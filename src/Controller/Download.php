@@ -19,10 +19,11 @@ class Download
     public function __invoke(
         ServerRequestInterface $request,
         LoopInterface $loop
-    )
-    {
+    ) {
         $fileName = str_replace(
-            'download/', '', trim($request->getUri()->getPath(), '/')
+            'download/',
+            '',
+            trim($request->getUri()->getPath(), '/')
         );
         $readFile = $this->childProcesses->create('cat ' . $fileName);
 

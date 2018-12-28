@@ -21,11 +21,13 @@ class Router
     public function __invoke(ServerRequestInterface $request)
     {
         $path = trim($request->getUri()->getPath());
+
         foreach ($this->routes as $pattern => $handler) {
-            if (preg_match("~$pattern~", $path)) {
+            if (preg_match("~/$pattern$~", $path)) {
                 return $handler($request, $this->loop);
             }
         }
+
         return $this->notFound($path);
     }
 

@@ -20,8 +20,7 @@ class Upload
     public function __invoke(
         ServerRequestInterface $request,
         LoopInterface $loop
-    )
-    {
+    ) {
         /** @var UploadedFileInterface $file */
         $file = $request->getUploadedFiles()['file'];
         $process = $this->childProcesses->create('cat > uploads/' . $file->getClientFilename());
@@ -31,6 +30,5 @@ class Upload
         $process->stdin->end($file->getStream()->getContents());
 
         return new Response(302, ['Location' => '/']);
-
     }
 }

@@ -19,8 +19,7 @@ class Preview
     public function __invoke(
         ServerRequestInterface $request,
         LoopInterface $loop
-    )
-    {
+    ) {
         $fileName = trim($request->getUri()->getPath(), '/');
         $ext = pathinfo($fileName, PATHINFO_EXTENSION);
         $readFile = $this->childProcesses->create('cat ' . $fileName);
