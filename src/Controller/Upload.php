@@ -7,6 +7,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use React\EventLoop\LoopInterface;
 use React\Http\Response;
+use React\Promise\Deferred;
 
 class Upload
 {
@@ -30,21 +31,31 @@ class Upload
             $file->getStream()->getContents()
         );
 
+        $deferred = new Deferred();
         $saveUpload->stdin->on(
             'close',
-            function () use ($fileName, $loop) {
-                $this->createPreview($fileName, $loop);
+            function () use ($fileName, $loop, $deferred) {
+                $this->createPreview($fileName, $loop, $deferred);
             }
         );
 
-        return new Response(302, ['Location' => '/']);
+        return $deferred->promise();
     }
 
-    private function createPreview($fileName, LoopInterface $loop)
+    private function createPreview($fileName, LoopInterface $loop, Deferred $deferred)
     {
         $createPreview = $this->childProcesses->create(
             'convert uploads/' . $fileName . ' -resize 128x128 previews/' . $fileName
         );
         $createPreview->start($loop);
+
+        $createPreview->on(
+            'exit',
+            function () use ($deferred) {
+                $deferred->resolve(
+                    new Response(302, ['Location' => '/'])
+                );
+            }
+        );
     }
 }
